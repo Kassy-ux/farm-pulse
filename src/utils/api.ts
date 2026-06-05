@@ -292,6 +292,14 @@ class WeatherAIClient {
     this.apiKey = apiKey;
   }
 
+  private ensureApiKey(): void {
+    if (!this.apiKey.trim()) {
+      throw new Error(
+        'WeatherAI API key is missing. Add VITE_WEATHERAI_API_KEY in Netlify environment variables and redeploy.'
+      );
+    }
+  }
+
   private get headers(): HeadersInit {
     return {
       Authorization: `Bearer ${this.apiKey}`,
@@ -299,6 +307,8 @@ class WeatherAIClient {
   }
 
   private async request<T>(path: string, params?: Record<string, string>): Promise<T> {
+    this.ensureApiKey();
+
     const url = apiUrl(path);
     if (params) {
       Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
@@ -334,6 +344,8 @@ class WeatherAIClient {
 
   /** Auto-detect location from caller IP and return weather + geo headers */
   async getWeatherByIP(): Promise<{ weather: WeatherResponse; geo: GeoLocation }> {
+    this.ensureApiKey();
+
     const url = apiUrl('/v1/weather-geo');
     url.searchParams.set('ip', 'auto');
     url.searchParams.set('days', '7');
@@ -378,6 +390,8 @@ class WeatherAIClient {
       notes?: string;
     }
   ): Promise<TreeAnalysisResponse> {
+    this.ensureApiKey();
+
     const form = new FormData();
     form.append('image', imageFile);
     if (options?.farmerId) form.append('farmerId', options.farmerId);

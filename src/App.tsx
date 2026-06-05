@@ -10,6 +10,7 @@ import LocationSearch from './components/LocationSearch';
 const App: React.FC = () => {
   const { weather, geo, state, error, refetch } = useWeather();
   const forecastDays = weather?.forecast?.forecastday ?? [];
+  const hasWeatherApiKey = Boolean(import.meta.env.VITE_WEATHERAI_API_KEY);
 
   const currentLocationStr =
     geo ? [geo.city, geo.region || geo.country].filter(Boolean).join(', ') : 'Detecting location…';
@@ -51,12 +52,13 @@ const App: React.FC = () => {
         )}
 
         {/* No API Key Warning */}
-        {!import.meta.env.VITE_WEATHERAI_API_KEY && state !== 'loading' && (
+        {!hasWeatherApiKey && state !== 'loading' && (
           <div className="api-key-banner">
             <AlertTriangle size={16} />
             <span>
-              <strong>API key not set.</strong> Add <code>VITE_WEATHERAI_API_KEY=wai_your_key</code> to
-              your <code>.env</code> file and restart the dev server.
+              <strong>API key not set.</strong> Add <code>VITE_WEATHERAI_API_KEY</code> in
+              Netlify environment variables, then redeploy. For local development, add it to
+              your <code>.env</code> file and restart Vite.
             </span>
           </div>
         )}
