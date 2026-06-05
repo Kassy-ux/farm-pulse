@@ -4,10 +4,11 @@ A smart agricultural weather dashboard powered by the WeatherAI API.
 
 FarmPulse gives farmers real-time weather insights, 7-day forecasts with AI summaries, context-aware crop advisories, and an AI-powered farm canopy analyzer — all in one clean interface.
 
-![FarmPulse Screenshot](https://via.placeholder.com/960x540?text=FarmPulse+Screenshot)
  Live Demo
 
-🔗 [farmpulse.netlify.app](https://farmpulse.netlify.app)**
+🔗[farmpulse.netlify.app](https://farm23.netlify.app)
+
+
 
  Features
 
@@ -21,27 +22,24 @@ FarmPulse gives farmers real-time weather insights, 7-day forecasts with AI summ
 | Farm canopy analyzer | `POST /v1/trees/analyze` | Upload drone/satellite image → tree count, health breakdown, AI recommendations |
 | Location search | Nominatim geocoding | Search any city and fetch its weather instantly |
 
----
+
 
 ## Tech Stack
 
-- **React 18** + **TypeScript** — type-safe component architecture
-- **Vite** — fast dev server and production builds
-- **WeatherAI API** — weather, geo-detection, and tree CV analysis
-- **Lucide React** — icons
-- **Syne + DM Sans** — Google Fonts
-- **Netlify** — deployment
+ React 18+ TypeScript — type-safe component architecture
+Vite — fast dev server and production builds
+WeatherAI API — weather, geo-detection, and tree CV analysis
+Lucide React— icons
+Syne + DM Sans — Google Fonts
+Netlify — deployme
 
----
+Local Setup
 
-## Local Setup
-
-### Prerequisites
+ Prerequisites
 
 - Node.js 18+
 - A free WeatherAI API key from [weather-ai.co](https://weather-ai.co/dashboard)
-
-### 1. Clone the repository
+1. Clone the repository
 
 ```bash
 git clone https://github.com/your-username/farmpulse.git
@@ -66,12 +64,12 @@ Open `.env` and add your WeatherAI API key:
 VITE_WEATHERAI_API_KEY=wai_your_key_here
 ```
 
-
+> ⚠️ Never commit your `.env` file. It is already in `.gitignore`.
 
 ### 4. Start the development server
 
 ```bash
-npm run dev
+Pnpm run dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173) in your browser.
@@ -79,7 +77,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 ### 5. Build for production
 
 ```bash
-npm run build
+Pnpm run build
 ```
 
 The production bundle is output to `dist/`.
@@ -88,9 +86,16 @@ The production bundle is output to `dist/`.
 
 ## Deployment
 
-### Netlify 
+### Netlify (recommended — free)
 
-
+1. Push the repo to GitHub.
+2. Go to [netlify.com](https://netlify.com) → **Add new site → Import from Git**.
+3. Set the build command: `npm run build`
+4. Set the publish directory: `dist`
+5. Add the environment variable:
+   - Key: `VITE_WEATHERAI_API_KEY`
+   - Value: `wai_your_key_here`
+6. Deploy.
 
 The `netlify.toml` in this repo handles all routing automatically.
 
@@ -151,12 +156,4 @@ GET /v1/weather?lat={lat}&lon={lon}&days=7&units=metric
 POST /v1/trees/analyze  (multipart/form-data)
 ```
 
-### API key security
 
-The API key is stored in a Vite environment variable (`VITE_WEATHERAI_API_KEY`) and is only included in the client bundle. For production applications requiring stricter key security, proxy requests through a backend server (e.g. an Express app on Render or a Next.js API route) so the key is never exposed in client-side code.
-
----
-
-## License
-
-MIT
